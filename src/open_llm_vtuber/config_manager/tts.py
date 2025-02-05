@@ -262,6 +262,16 @@ class SherpaOnnxTTSConfig(I18nMixin):
         "debug": Description(en="Enable debug mode", zh="启用调试模式"),
     }
 
+class StyleTTS2Config(I18nMixin):
+    """Configuration for StyleTTS2."""
+
+    api_url: str = Field(..., alias="api_url")
+    voice_description: str = Field(..., alias="voice_description")
+
+    DESCRIPTIONS: ClassVar[Dict[str, Description]] = {
+        "api_url": Description(en="URL of the StyleTTS2 API endpoint", zh="StyleTTS2 API 端点的 URL"),
+    }
+
 
 class TTSConfig(I18nMixin):
     """Configuration for Text-to-Speech."""
@@ -277,6 +287,7 @@ class TTSConfig(I18nMixin):
         "gpt_sovits_tts",
         "fish_api_tts",
         "sherpa_onnx_tts",
+        "styletts2",
     ] = Field(..., alias="tts_model")
 
     azure_tts: Optional[AzureTTSConfig] = Field(None, alias="azure_tts")
@@ -291,6 +302,7 @@ class TTSConfig(I18nMixin):
     sherpa_onnx_tts: Optional[SherpaOnnxTTSConfig] = Field(
         None, alias="sherpa_onnx_tts"
     )
+    styletts2: Optional[StyleTTS2Config] = Field(None, alias="styletts2")
 
     DESCRIPTIONS: ClassVar[Dict[str, Description]] = {
         "tts_model": Description(
@@ -314,6 +326,7 @@ class TTSConfig(I18nMixin):
         "sherpa_onnx_tts": Description(
             en="Configuration for Sherpa Onnx TTS", zh="Sherpa Onnx TTS 配置"
         ),
+        "styletts2": Description(en="Configuration for StyleTTS2", zh="StyleTTS2 配置"),
     }
 
     @model_validator(mode="after")
@@ -341,5 +354,7 @@ class TTSConfig(I18nMixin):
             values.fish_api_tts.model_validate(values.fish_api_tts.model_dump())
         elif tts_model == "sherpa_onnx_tts" and values.sherpa_onnx_tts is not None:
             values.sherpa_onnx_tts.model_validate(values.sherpa_onnx_tts.model_dump())
+        elif tts_model == "styletts2" and values.styletts2 is not None:
+            values.styletts2.model_validate(values.styletts2.model_dump())
 
         return values

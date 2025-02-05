@@ -122,7 +122,7 @@ character_config:
 
       ollama_llm:
         base_url: "http://localhost:11434/v1"
-        model: "qwen2.5:latest"
+        model: "llama3.2:1b"
         temperature: 0.7 # value between 0 to 2
         # seconds to keep the model in memory after inactivity.
         # set to -1 to keep the model in memory forever (even after exiting open llm vtuber)
@@ -254,7 +254,7 @@ character_config:
 
   # =================== Text to Speech ===================
   tts_config:
-    tts_model: "edge_tts"
+    tts_model: "styletts2"
     # text to speech model options:
     #   "azure_tts", "pyttsx3_tts", "edge_tts", "bark_tts",
     #   "cosyvoice_tts", "melo_tts", "coqui_tts",
@@ -351,6 +351,11 @@ character_config:
       num_threads: 1 # Number of computation threads
       speed: 1.0 # Speech speed (1.0 is normal)
       debug: false # Enable debug mode (True/False)
+
+    styletts2:
+      # StyleTTS2 API configuration
+      api_url: "http://localhost:8000/api/styletts2"
+      voice_description: "Trump"
 
   tts_preprocessor_config:
     # settings regarding preprocessing for text that goes into TTS

@@ -97,6 +97,14 @@ class TTSFactory:
 
             return SherpaOnnxTTSEngine(**kwargs)
 
+        elif engine_type == "styletts2":
+            from .styletts2_tts import TTSEngine as StyleTTS2Engine
+            
+            return StyleTTS2Engine(
+                api_url=kwargs.get("api_url"),
+                voice_description=kwargs.get("voice_description"),
+            )
+
         else:
             raise ValueError(f"Unknown TTS engine type: {engine_type}")
 
