@@ -113,7 +113,7 @@
         "emotionMap": {
             "neutral": 0,
             "anger": 2,
-            "disgust": 7,   
+            "disgust": 7,
             "fear": 3,
             "joy": 5,
             "sadness": 3,
@@ -156,6 +156,108 @@
             },
             "HitAreaBody": {
                 "": 1
+            }
+        }
+    },
+    {
+        "name": "kei_vowels_pro",
+        "description": "Grey-Haired Boy, locally available. no internet required.",
+        "url": "/live2d-models/kei_vowels_pro/kei_vowels_pro.model3.json",
+        "kScale": 0,
+        "initialXshift": 0,
+        "initialYshift": 0,
+        "kXOffset": 1150,
+        "idleMotionGroupName": "idle",
+        "emotionMap": {
+            "neutral": 0,
+            "anger": 2,
+            "disgust": 2,
+            "fear": 1,
+            "joy": 3,
+            "smirk": 3,
+            "sadness": 1,
+            "surprise": 3
+        },
+        "tapMotions": {
+            "body": {
+                "tap_body": 30,
+                "shake": 30,
+                "pinch_in": 20,
+                "pinch_out": 20
+            },
+            "head": {
+                "flick_head": 40,
+                "shake": 20,
+                "pinch_in": 20,
+                "pinch_out": 20
+            }
+        }
+    },
+    {
+        "name": "pachan",
+        "description": "Pachirisu",
+        "url": "/live2d-models/pachan/pachirisu anime girl - top half.model3.json",
+        "kScale": 0,
+        "initialXshift": 0,
+        "initialYshift": 0,
+        "kXOffset": 1150,
+        "idleMotionGroupName": "idle",
+        "emotionMap": {
+            "neutral": 0,
+            "anger": 2,
+            "disgust": 2,
+            "fear": 1,
+            "joy": 3,
+            "smirk": 3,
+            "sadness": 1,
+            "surprise": 3
+        },
+        "tapMotions": {
+            "body": {
+                "tap_body": 30,
+                "shake": 30,
+                "pinch_in": 20,
+                "pinch_out": 20
+            },
+            "head": {
+                "flick_head": 40,
+                "shake": 20,
+                "pinch_in": 20,
+                "pinch_out": 20
+            }
+        }
+    },
+    {
+        "name": "alexia",
+        "description": "Alexia",
+        "url": "/live2d-models/alexia/Alexia.model3.json",
+        "kScale": 0,
+        "initialXshift": 0,
+        "initialYshift": 0,
+        "kXOffset": 1150,
+        "idleMotionGroupName": "idle",
+        "emotionMap": {
+            "neutral": 0,
+            "anger": 2,
+            "disgust": 2,
+            "fear": 1,
+            "joy": 3,
+            "smirk": 3,
+            "sadness": 1,
+            "surprise": 3
+        },
+        "tapMotions": {
+            "body": {
+                "tap_body": 30,
+                "shake": 30,
+                "pinch_in": 20,
+                "pinch_out": 20
+            },
+            "head": {
+                "flick_head": 40,
+                "shake": 20,
+                "pinch_in": 20,
+                "pinch_out": 20
             }
         }
     }

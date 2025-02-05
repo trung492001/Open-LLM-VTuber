@@ -113,6 +113,7 @@ async def conversation_chain(
     agent_engine: AgentInterface,
     tts_engine: TTSInterface,
     live2d_model: Live2dModel,
+    source_websocket_send: WebSocket.send,
     websocket_send: WebSocket.send,
     translate_engine: TranslateInterface,
     conf_uid: str = "",
@@ -128,7 +129,7 @@ async def conversation_chain(
         agent_engine: Agent instance
         tts_engine: TTS engine instance
         live2d_model: Live2D model instance
-        websocket_send: WebSocket send function
+        source_websocket_send: WebSocket send function
         conf_uid: Configuration ID
         history_uid: History ID
         images: Optional list of image data from frontend
@@ -142,7 +143,7 @@ async def conversation_chain(
     try:
         session_emoji = np.random.choice(EMOJI_LIST)
 
-        await websocket_send(
+        await source_websocket_send(
             json.dumps(
                 {
                     "type": "control",
@@ -158,7 +159,7 @@ async def conversation_chain(
         if isinstance(user_input, np.ndarray):
             logger.info("Transcribing audio input...")
             input_text = await asr_engine.async_transcribe_np(user_input)
-            await websocket_send(
+            await source_websocket_send(
                 json.dumps({"type": "user-input-transcription", "text": input_text})
             )
 
@@ -208,7 +209,7 @@ async def conversation_chain(
                         actions=actions,
                         live2d_model=live2d_model,
                         tts_engine=tts_engine,
-                        websocket_send=websocket_send,
+                        websocket_send=source_websocket_send,
                     )
             elif isinstance(output, AudioOutput):
                 async for audio_path, display_text, transcript, actions in output:
@@ -218,7 +219,7 @@ async def conversation_chain(
                         display_text=display_text,
                         actions=actions,
                     )
-                    await websocket_send(json.dumps(audio_payload))
+                    await source_websocket_send(json.dumps(audio_payload))
 
         if tts_manager.task_list:
             await asyncio.gather(*tts_manager.task_list)
@@ -234,7 +235,7 @@ async def conversation_chain(
             store_message(conf_uid, history_uid, "ai", full_response)
             logger.info(f"💾 Stored AI message: '''{full_response}'''")
 
-        await websocket_send(
+        await source_websocket_send(
             json.dumps(
                 {
                     "type": "control",
@@ -243,6 +244,15 @@ async def conversation_chain(
             )
         )
         logger.info(f"😎👍✅ Conversation Chain {session_emoji} completed!")
+
+        await websocket_send((
+            json.dumps(
+                {
+                    "type": "control",
+                    "text": "conversation-chain-end",
+                }
+            )
+        ))
         return full_response
 
 

@@ -2,6 +2,7 @@
 /live2d-models/*
 !/live2d-models/mao_pro
 !/live2d-models/shizuku
+!/live2d-models/alexia
 
 # ignore non-default character configs
 /character-configs/*

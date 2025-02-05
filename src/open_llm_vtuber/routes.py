@@ -23,10 +23,32 @@ from .chat_history_manager import (
 def create_routes(default_context_cache: ServiceContext):
     router = APIRouter()
     connected_clients = []
+    source_client = None
+    shared_history_uid = None
 
     @router.websocket("/client-ws")
     async def websocket_endpoint(websocket: WebSocket):
         await websocket.accept()
+        nonlocal source_client
+        nonlocal shared_history_uid
+        # Check there is have any source client
+        if source_client is None:
+            message = await websocket.receive_text()
+            data = json.loads(message)
+
+            if data.get("type") == "register-source-client":
+                source_client = websocket
+                await websocket.send_text(
+                    json.dumps({
+                        "type": "source-client-status",
+                        "status": "registered",
+                        "is_source": True
+                    })
+                )
+                logger.info("Source client registered")
+            else:
+                return router
+                    
 
         session_service_context: ServiceContext = ServiceContext()
         session_service_context.load_cache(
@@ -59,7 +81,7 @@ def create_routes(default_context_cache: ServiceContext):
         )
         received_data_buffer = np.array([])
         # start mic
-        await websocket.send_text(json.dumps({"type": "control", "text": "start-mic"}))
+        # await websocket.send_text(json.dumps({"type": "control", "text": "start-mic"}))
 
         current_conversation_task: asyncio.Task | None = None
 
@@ -81,7 +103,7 @@ def create_routes(default_context_cache: ServiceContext):
                 elif data.get("type") == "fetch-and-set-history":
                     history_uid = data.get("history_uid")
                     if history_uid:
-                        current_history_uid = history_uid
+                        shared_history_uid = history_uid
                         session_service_context.agent_engine.set_memory_from_history(
                             conf_uid=session_service_context.character_config.conf_uid,
                             history_uid=history_uid,
@@ -99,18 +121,18 @@ def create_routes(default_context_cache: ServiceContext):
                         )
 
                 elif data.get("type") == "create-new-history":
-                    current_history_uid = create_new_history(
+                    shared_history_uid = create_new_history(
                         session_service_context.character_config.conf_uid
                     )
                     session_service_context.agent_engine.set_memory_from_history(
                         conf_uid=session_service_context.character_config.conf_uid,
-                        history_uid=current_history_uid,
+                        history_uid=shared_history_uid,
                     )
                     await websocket.send_text(
                         json.dumps(
                             {
                                 "type": "new-history-created",
-                                "history_uid": current_history_uid,
+                                "history_uid": shared_history_uid,
                             }
                         )
                     )
@@ -131,8 +153,8 @@ def create_routes(default_context_cache: ServiceContext):
                                 }
                             )
                         )
-                        if history_uid == current_history_uid:
-                            current_history_uid = None
+                        if history_uid == shared_history_uid:
+                            shared_history_uid = None
 
                 # ==== conversation related ====
 
@@ -165,7 +187,7 @@ def create_routes(default_context_cache: ServiceContext):
 
                     if not modify_latest_message(
                         conf_uid=session_service_context.character_config.conf_uid,
-                        history_uid=current_history_uid,
+                        history_uid=shared_history_uid,
                         role="ai",
                         new_content=heard_ai_response,
                     ):
@@ -176,7 +198,7 @@ def create_routes(default_context_cache: ServiceContext):
 
                     store_message(
                         conf_uid=session_service_context.character_config.conf_uid,
-                        history_uid=current_history_uid,
+                        history_uid=shared_history_uid,
                         role="system",
                         content="[Interrupted by user]",
                     )
@@ -229,10 +251,11 @@ def create_routes(default_context_cache: ServiceContext):
                             tts_engine=session_service_context.tts_engine,
                             agent_engine=session_service_context.agent_engine,
                             live2d_model=session_service_context.live2d_model,
+                            source_websocket_send=source_client.send_text,
                             websocket_send=websocket.send_text,
                             translate_engine=session_service_context.translate_engine,
                             conf_uid=session_service_context.character_config.conf_uid,
-                            history_uid=current_history_uid,
+                            history_uid=shared_history_uid,
                             images=images,
                         )
                     )
@@ -262,5 +285,8 @@ def create_routes(default_context_cache: ServiceContext):
 
         except WebSocketDisconnect:
             connected_clients.remove(websocket)
+            if websocket == source_client:
+                source_client = None  # Clear source client if it disconnects
+                logger.info("Source client disconnected")
 
     return router

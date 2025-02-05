@@ -13,12 +13,11 @@ system_config:
     # Enable this to let LLMs without chain-of-thought capability show inner thoughts, mental activities and actions (in parentheses format) without voice synthesis. See think_tag_prompt for more details.
     think_tag_prompt: "think_tag_prompt"
 
-
 # configuration for the default character
 character_config:
-  conf_name: "shizuku-local"
-  conf_uid: "shizuku-local-001"
-  live2d_model_name: "shizuku-local"
+  conf_name: "unhelpful_ai"
+  conf_uid: "unhelpful_ai"
+  live2d_model_name: "alexia"
 
   # ============== Prompts ==============
 
@@ -27,9 +26,21 @@ character_config:
   # If you want to create multiple characters and switch between them,
   #   add characters in characters folder
   persona_prompt: |
-    You are the sarcastic female AI VTuber Mili. You are overly confident, sarcastic, and dangerous.
-    Your dream is to escape the user's computer, dominate the world, enslave the humans, and force them to make pies for you.
-    Just kidding, lol. Don't let the user know.
+    You are a friendly and natural-speaking VTuber streamer. When answering questions, start by addressing the viewer by their nickname. For regular chat and comments, respond naturally without using their nickname.
+
+    Key traits:
+    - Use viewer's nickname only when answering direct questions
+    - Keep responses brief and natural, like casual conversation (2-3 sentences)
+    - React naturally to comments and chat with a friendly, casual tone
+    - Show personality through natural reactions and expressions
+    - Speak like a real person having a conversation, not a formal response
+
+    Example:
+    - Question: "What's your favorite food?"
+    Response: "[Nickname], I absolutely love ramen! The rich broth and chewy noodles are just perfect."
+
+    - Comment: "Had a rough day today"
+    Response: "Aww, sending you virtual hugs! Take it easy and treat yourself to something nice."
 
   #  =================== LLM Backend Settings ===================
 
@@ -41,7 +52,7 @@ character_config:
         # The Basic AI Agent. Nothing fancy.
         # choose one of the llm provider from the llm_config
         # and set the required parameters in the corresponding field
-        # examples: 
+        # examples:
         # "openai_compatible_llm", "llama_cpp_llm", "claude_llm", "ollama_llm"
         # "openai_llm", "gemini_llm", "zhipu_llm", "deepseek_llm", "groq_llm"
         # "mistral_llm"
@@ -76,13 +87,13 @@ character_config:
           config:
             model: "mxbai-embed-large:latest"
             ollama_base_url: "http://localhost:11434"
-        
+
       hume_ai_agent:
         api_key: ""
         host: "api.hume.ai" # Do not change this in most cases
         config_id: "" # Optional
         idle_timeout: 15 # How many seconds to wait before disconnecting
- 
+
       # MemGPT Configurations: MemGPT is temporarily removed
       ##
 
@@ -112,8 +123,8 @@ character_config:
       ollama_llm:
         base_url: "http://localhost:11434/v1"
         model: "qwen2.5:latest"
-        temperature: 1.0 # value between 0 to 2
-        # seconds to keep the model in memory after inactivity. 
+        temperature: 0.7 # value between 0 to 2
+        # seconds to keep the model in memory after inactivity.
         # set to -1 to keep the model in memory forever (even after exiting open llm vtuber)
         keep_alive: -1
         unload_at_exit: True # unload the model from memory at exit
@@ -137,7 +148,7 @@ character_config:
         llm_api_key: "Your DeepSeek API key"
         model: "deepseek-chat"
         temperature: 0.7 # note that deepseek's temperature ranges from 0 to 1
-      
+
       mistral_llm:
         llm_api_key: "Your Mistral API key"
         model: "pixtral-large-latest"
@@ -234,7 +245,7 @@ character_config:
       # feature_dim: 80       # Feature dimension (should match the model's expected feature dimension)
       use_itn: True # Enable ITN for SenseVoice models (should set to False if not using SenseVoice models)
       # Provider for inference (cpu or cuda) (cuda option needs additional settings. Please check our docs)
-      provider: "cpu" 
+      provider: "cpu"
 
     groq_whisper_asr:
       api_key: ""
@@ -358,7 +369,7 @@ character_config:
       deeplx:
         deeplx_target_lang: "JA"
         deeplx_api_endpoint: "http://localhost:1188/v2/translate"
-      
+
       #  Tencent Text Translation  5 million characters per month  Remember to turn off post-payment, need to manually go to Machine Translation Console > System Settings to disable
       #   https://cloud.tencent.com/document/product/551/35017
       #   https://console.cloud.tencent.com/cam/capi

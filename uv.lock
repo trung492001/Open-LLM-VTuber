@@ -358,7 +358,7 @@ name = "click"
 version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a", size = 226593 }
 wheels = [
@@ -941,7 +941,7 @@ wheels = [
 
 [[package]]
 name = "open-llm-vtuber"
-version = "1.0.0a2"
+version = "1.0.0a3"
 source = { virtual = "." }
 dependencies = [
     { name = "anthropic" },
@@ -3941,10 +3941,10 @@ name = "pyttsx3"
 version = "2.98"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "comtypes", marker = "platform_system == 'Windows'" },
-    { name = "pyobjc", marker = "platform_system == 'Darwin'" },
-    { name = "pypiwin32", marker = "platform_system == 'Windows'" },
-    { name = "pywin32", marker = "platform_system == 'Windows'" },
+    { name = "comtypes", marker = "sys_platform == 'win32'" },
+    { name = "pyobjc", marker = "sys_platform == 'darwin'" },
+    { name = "pypiwin32", marker = "sys_platform == 'win32'" },
+    { name = "pywin32", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/be/2b/490f7d3fbbfa6e29959351fd4d84c570bc319eaa0570e6abc5d1ce2b7392/pyttsx3-2.98.tar.gz", hash = "sha256:cc609466151d8c4a69c1c765a945f893c00c1fd2569c2db55e17dc22121e9162", size = 32052 }
 wheels = [
@@ -4295,7 +4295,7 @@ name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a8/4b/29b4ef32e036bb34e4ab51796dd745cdba7ed47ad142a9f4a1eb8e0c744d/tqdm-4.67.1.tar.gz", hash = "sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2", size = 169737 }
 wheels = [
