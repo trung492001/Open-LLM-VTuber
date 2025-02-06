@@ -352,7 +352,6 @@ character_config:
         deeplx_target_lang: "JA" # 目标语言
         deeplx_api_endpoint: "http://localhost:1188/v2/translate" # API 端点
 
-
       #  腾讯文本翻译  每月500万字符  记得关闭后付费,需要手动前往 机器翻译控制台 > 系统设置 关闭
       #   https://cloud.tencent.com/document/product/551/35017
       #   https://console.cloud.tencent.com/cam/capi

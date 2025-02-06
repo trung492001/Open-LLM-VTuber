@@ -31,4 +31,5 @@ dependencies = [
     "tqdm>=4.67.1",
     "uvicorn[standard]>=0.33.0",
     "websocket-client>=1.8.0",
+    "elevenlabs>=1.50.7",
 ]

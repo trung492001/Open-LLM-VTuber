@@ -104,6 +104,19 @@ class TTSFactory:
                 api_url=kwargs.get("api_url"),
                 voice_description=kwargs.get("voice_description"),
             )
+        
+        elif engine_type == "elevenlabs":
+            from .elevenlabs_tts import TTSEngine as ElevenLabsTTSEngine
+
+            return ElevenLabsTTSEngine(
+                api_key=kwargs.get("api_key"),
+                voice_id=kwargs.get("voice_id"),
+                model_id=kwargs.get("model_id", "eleven_multilingual_v2"),
+                stability=kwargs.get("stability", 0.5),
+                similarity_boost=kwargs.get("similarity_boost", 0.75),
+                style=kwargs.get("style", 0.0),
+                use_speaker_boost=kwargs.get("use_speaker_boost", True)
+            )
 
         else:
             raise ValueError(f"Unknown TTS engine type: {engine_type}")

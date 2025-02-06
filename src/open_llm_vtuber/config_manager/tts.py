@@ -271,6 +271,16 @@ class StyleTTS2Config(I18nMixin):
     DESCRIPTIONS: ClassVar[Dict[str, Description]] = {
         "api_url": Description(en="URL of the StyleTTS2 API endpoint", zh="StyleTTS2 API 端点的 URL"),
     }
+class ElevenLabsConfig(I18nMixin):
+    """Configuration for ElevenLabs TTS."""
+
+    api_key: str = Field(..., alias="api_key")
+    voice_id: str = Field(..., alias="voice_id")
+    model_id: str = Field(..., alias="model_id")
+    stability: float = Field(..., alias="stability")
+    similarity_boost: float = Field(..., alias="similarity_boost")
+    style: float = Field(..., alias="style")
+    use_speaker_boost: bool = Field(..., alias="use_speaker_boost")
 
 
 class TTSConfig(I18nMixin):
@@ -288,6 +298,7 @@ class TTSConfig(I18nMixin):
         "fish_api_tts",
         "sherpa_onnx_tts",
         "styletts2",
+        "elevenlabs",
     ] = Field(..., alias="tts_model")
 
     azure_tts: Optional[AzureTTSConfig] = Field(None, alias="azure_tts")
@@ -303,7 +314,8 @@ class TTSConfig(I18nMixin):
         None, alias="sherpa_onnx_tts"
     )
     styletts2: Optional[StyleTTS2Config] = Field(None, alias="styletts2")
-
+    elevenlabs: Optional[ElevenLabsConfig] = Field(None, alias="elevenlabs")
+    
     DESCRIPTIONS: ClassVar[Dict[str, Description]] = {
         "tts_model": Description(
             en="Text-to-speech model to use", zh="要使用的文本转语音模型"
@@ -327,6 +339,9 @@ class TTSConfig(I18nMixin):
             en="Configuration for Sherpa Onnx TTS", zh="Sherpa Onnx TTS 配置"
         ),
         "styletts2": Description(en="Configuration for StyleTTS2", zh="StyleTTS2 配置"),
+        "elevenlabs": Description(
+            en="Configuration for ElevenLabs TTS", zh="ElevenLabs TTS 配置"
+        ),
     }
 
     @model_validator(mode="after")
@@ -356,5 +371,7 @@ class TTSConfig(I18nMixin):
             values.sherpa_onnx_tts.model_validate(values.sherpa_onnx_tts.model_dump())
         elif tts_model == "styletts2" and values.styletts2 is not None:
             values.styletts2.model_validate(values.styletts2.model_dump())
+        elif tts_model == "elevenlabs" and values.elevenlabs is not None:
+            values.elevenlabs.model_validate(values.elevenlabs.model_dump())
 
         return values

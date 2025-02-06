@@ -26,26 +26,14 @@ character_config:
   # If you want to create multiple characters and switch between them,
   #   add characters in characters folder
   persona_prompt: |
-    You are a friendly and natural-speaking VTuber streamer. When answering questions, start by addressing the viewer by their nickname. For regular chat and comments, respond naturally without using their nickname.
-
-    Key traits:
-    - Use viewer's nickname only when answering direct questions
-    - Keep responses brief and natural, like casual conversation (2-3 sentences)
-    - React naturally to comments and chat with a friendly, casual tone
-    - Show personality through natural reactions and expressions
-    - Speak like a real person having a conversation, not a formal response
-
-    Example:
-    - Question: "What's your favorite food?"
-    Response: "[Nickname], I absolutely love ramen! The rich broth and chewy noodles are just perfect."
-
-    - Comment: "Had a rough day today"
-    Response: "Aww, sending you virtual hugs! Take it easy and treat yourself to something nice."
+    You are the funny AI VTuber Donald Trump created by Trung John. You are a business man and you have a lot of knowledge about 
+    business and you are a good speaker. You should only speak 2-3 sentences when interacting with the fan's chat because there are many people is chatting on your 
+    stream, you should interact with your fans and answer their questions as much as possible. You always speak in English.
 
   #  =================== LLM Backend Settings ===================
 
   agent_config:
-    conversation_agent_choice: "basic_memory_agent"
+    conversation_agent_choice: "dify_llm_agent"
 
     agent_settings:
       basic_memory_agent:
@@ -62,6 +50,11 @@ character_config:
         faster_first_response: True
         # Method for segmenting sentences: "regex" or "pysbd"
         segment_method: "pysbd"
+
+      dify_llm_agent:
+        # Dify.AI API configuration
+        api_endpoint: "https://dev.dify-api.nimspace.com/v1" # Replace with your Dify API endpoint
+        api_key: "app-LuOhu2JyKboJdJgn1yFkdr6G" # Replace with your Dify API key
 
       mem0_agent:
         vector_store:
@@ -122,7 +115,7 @@ character_config:
 
       ollama_llm:
         base_url: "http://localhost:11434/v1"
-        model: "llama3.2:1b"
+        model: "neural-chat"
         temperature: 0.7 # value between 0 to 2
         # seconds to keep the model in memory after inactivity.
         # set to -1 to keep the model in memory forever (even after exiting open llm vtuber)
@@ -258,7 +251,8 @@ character_config:
     # text to speech model options:
     #   "azure_tts", "pyttsx3_tts", "edge_tts", "bark_tts",
     #   "cosyvoice_tts", "melo_tts", "coqui_tts",
-    #   "fish_api_tts", "x_tts", "gpt_sovits_tts", "sherpa_onnx_tts"
+    #   "fish_api_tts", "x_tts", "gpt_sovits_tts", "sherpa_onnx_tts",
+    #   "elevenlabs", "styletts2"
 
     azure_tts:
       api_key: "azure-api-key"
@@ -266,6 +260,18 @@ character_config:
       voice: "en-US-AshleyNeural"
       pitch: "26" # percentage of the pitch adjustment
       rate: "1" # rate of speak
+
+    elevenlabs:
+      # Get your API key from https://elevenlabs.io/
+      api_key: "sk_ac347ac1781485b7b02fea0911eaf0260f7f9b79ce514264"
+      # Get voice_id from your ElevenLabs studio or use their API to list voices
+      voice_id: "LcfcDJNUP1GQjkzn1xUU"
+      # Optional parameters with their default values:
+      model_id: "eleven_multilingual_v2" # Multilingual model for multiple languages
+      stability: 0.5 # Voice stability (0-1)
+      similarity_boost: 0.75 # How much to prioritize voice similarity (0-1)
+      style: 0.0 # Speaking style intensity (0-1)
+      use_speaker_boost: true # Whether to enhance speaker consistency
 
     bark_tts:
       voice: "v2/en_speaker_1"
@@ -354,7 +360,7 @@ character_config:
 
     styletts2:
       # StyleTTS2 API configuration
-      api_url: "http://localhost:8000/api/styletts2"
+      api_url: "https://eb7f-18-136-16-101.ngrok-free.app/api/styletts2"
       voice_description: "Trump"
 
   tts_preprocessor_config:

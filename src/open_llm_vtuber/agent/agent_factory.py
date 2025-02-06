@@ -4,6 +4,7 @@ from loguru import logger
 from .agents.agent_interface import AgentInterface
 from .agents.basic_memory_agent import BasicMemoryAgent
 from .stateless_llm_factory import LLMFactory as StatelessLLMFactory
+from .agents.dify_llm import DifyLLMAgent
 from .agents.hume_ai import HumeAIAgent
 
 
@@ -92,6 +93,19 @@ class AgentFactory:
                 host=settings.get("host", "api.hume.ai"),
                 config_id=settings.get("config_id"),
                 idle_timeout=settings.get("idle_timeout", 15),
+            )
+
+        elif conversation_agent_choice == "dify_llm_agent":
+            settings = agent_settings.get("dify_llm_agent", {})
+            return DifyLLMAgent(
+                api_endpoint=settings.get("api_endpoint"),
+                api_key=settings.get("api_key"),
+                live2d_model=live2d_model,
+                tts_preprocessor_config=tts_preprocessor_config,
+                faster_first_response=settings.get(
+                    "faster_first_response", True
+                ),
+                segment_method=settings.get("segment_method", "pysbd"),
             )
 
         else:

@@ -131,6 +131,10 @@ class HumeAIConfig(I18nMixin, BaseModel):
         ),
     }
 
+class DifyLLMConfig(I18nMixin, BaseModel):
+    """Configuration for the Dify LLM agent."""
+    api_endpoint: str = Field(..., alias="api_endpoint")
+    api_key: str = Field(..., alias="api_key")
 
 class AgentSettings(I18nMixin, BaseModel):
     """Settings for different types of agents."""
@@ -140,7 +144,8 @@ class AgentSettings(I18nMixin, BaseModel):
     )
     mem0_agent: Optional[Mem0Config] = Field(None, alias="mem0_agent")
     hume_ai_agent: Optional[HumeAIConfig] = Field(None, alias="hume_ai_agent")
-
+    dify_llm_agent: Optional[DifyLLMConfig] = Field(None, alias="dify_llm_agent")
+    
     DESCRIPTIONS: ClassVar[Dict[str, Description]] = {
         "basic_memory_agent": Description(
             en="Configuration for basic memory agent", zh="基础记忆代理配置"
@@ -149,6 +154,9 @@ class AgentSettings(I18nMixin, BaseModel):
         "hume_ai_agent": Description(
             en="Configuration for Hume AI agent", zh="Hume AI 代理配置"
         ),
+        "dify_llm_agent": Description(
+            en="Configuration for Dify LLM agent", zh="Dify LLM 代理配置"
+        ),
     }
 
 
@@ -156,7 +164,8 @@ class AgentConfig(I18nMixin, BaseModel):
     """This class contains all of the configurations related to agent."""
 
     conversation_agent_choice: Literal[
-        "basic_memory_agent", "mem0_agent", "hume_ai_agent"
+        "basic_memory_agent", "mem0_agent", "hume_ai_agent",
+        "dify_llm_agent"
     ] = Field(..., alias="conversation_agent_choice")
     agent_settings: AgentSettings = Field(..., alias="agent_settings")
     llm_configs: StatelessLLMConfigs = Field(..., alias="llm_configs")
@@ -170,5 +179,8 @@ class AgentConfig(I18nMixin, BaseModel):
         ),
         "llm_configs": Description(
             en="Pool of LLM provider configurations", zh="语言模型提供者配置池"
+        ),
+        "dify_llm_agent": Description(
+            en="Configuration for Dify LLM agent", zh="Dify LLM 代理配置"
         ),
     }
